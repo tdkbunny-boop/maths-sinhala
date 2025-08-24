@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Magic Mathz – පාසල් ළමයින්ට</title>
+  <meta name="description" content="සිංහලෙන් ගණිතය පාඩම්, උදාහරණ, ප්‍රශ්න පත්‍ර සහ Quiz – පන්ති 3–11 සඳහා." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Noto+Sans+Sinhala:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- MathJax for nice math rendering -->
+  <script>
+    window.MathJax = { tex: { inlineMath: [['$','$'], ['\\(','\\)']] } };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+  <style>
+    :root{
+      --bg:#0f172a;         /* slate-900 */
+      --surface:#111827;    /* gray-900 */
+      --card:#1f2937;       /* gray-800 */
+      --text:#e5e7eb;       /* gray-200 */
+      --muted:#9ca3af;      /* gray-400 */
+      --brand:#22c55e;      /* green-500 */
+      --brand-2:#06b6d4;    /* cyan-500 */
+      --danger:#ef4444;     /* red-500 */
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:radial-gradient(1200px 700px at 10% -10%, #1e293b 0%, #0b1223 60%, #070b15 100%), var(--bg);color:var(--text);font-family:"Noto Sans Sinhala", "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:auto;padding:0 16px}
+    header{position:sticky;top:0;z-index:50;background:rgba(7,11,21,0.75);backdrop-filter:saturate(1.1) blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}
+    .brand .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;box-shadow:var(--shadow)}
+    .brand .logo span{font-weight:800;color:white}
+    .links{display:flex;gap:14px;flex-wrap:wrap}
+    .links a{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.08);color:var(--muted)}
+    .links a.active, .links a:hover{color:white;border-color:rgba(255,255,255,.18)}
+
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center;padding:36px 0 22px}
+    .hero .title{font-size:clamp(26px,3.2vw,46px);font-weight:800;line-height:1.1}
+    .hero .subtitle{color:var(--muted);margin-top:10px}
+    .stat{display:flex;gap:16px;margin-top:18px;flex-wrap:wrap}
+    .pill{padding:8px 12px;border-radius:999px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35)}
+    .cta{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+    .btn{padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));color:white;box-shadow:var(--shadow);cursor:pointer}
+    .btn.primary{background:linear-gradient(180deg,var(--brand),#15a357);border-color:rgba(0,0,0,.18)}
+
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .card{grid-column:span 6;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .card h3{margin:0;font-size:18px}
+    .card p{margin:8px 0 0;color:var(--muted)}
+    .card .actions{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+
+    .panel{margin:26px 0;padding:16px;border-radius:var(--radius);background:linear-gradient(180deg, rgba(6,182,212,.12), rgba(6,182,212,.04));border:1px solid rgba(6,182,212,.35)}
+
+    /* Quiz styles */
+    .quiz{display:none}
+    .quiz.active{display:block}
+    .question{font-weight:700}
+    .option{display:block;margin:8px 0;padding:10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;cursor:pointer}
+    .option.correct{border-color:#16a34a;background:rgba(22,163,74,.15)}
+    .option.wrong{border-color:#dc2626;background:rgba(220,38,38,.15)}
+    .progress{display:flex;justify-content:space-between;align-items:center;margin:12px 0;color:var(--muted)}
+
+    /* Tools */
+    .tools{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .tool{grid-column:span 6;background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .tool h4{margin:0 0 10px}
+    .input, select{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0b1223;color:white}
+    .tool-output{margin-top:10px;padding:10px;border-radius:10px;background:#0b1223;border:1px solid rgba(255,255,255,.06);min-height:44px}
+
+    footer{margin:36px 0 28px;color:var(--muted);font-size:14px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#0b1223;border:1px solid rgba(255,255,255,.08);margin-right:6px}
+
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .card, .tool{grid-column:span 12}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#">
+        <div class="logo"><span>ම</span></div>
+        <div>ගණිතය<span style="color:var(--brand)">.lk</span></div>
+      </a>
+      <nav class="links">
+        <a href="#home" class="active">මුල් පිටුව</a>
+        <a href="#lessons">පාඩම්</a>
+        <a href="#quiz">QUIZ</a>
+        <a href="#tools">උපකරණ</a>
+        <a href="#about">අප ගැන</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section id="home" class="hero">
+      <div>
+        <div class="title">සිංහලෙන් සරල ගණිතය. <span style="color:var(--brand)">A+</span> ලකුණු කරන්න 💯</div>
+        <div class="subtitle">පන්ති 3–11 සඳහා පාඩම්, උදාහරණ, Quiz හා සකස් කළ උපකරණ. ගුරුවරුන්ටත් ළමයින්ටත් සුහපත.</div>
+        <div class="stat">
+          <span class="pill">👩‍🏫 පාඩම්: <b id="lessonCount">0</b></span>
+          <span class="pill">🧩 ප්‍රශ්න: <b id="questionCount">0</b></span>
+          <span class="pill">🏅 ලකුණු: <b id="points">0</b></span>
+        </div>
+        <div class="cta">
+          <button class="btn primary" onclick="scrollToId('quiz')">දැන්ම ක්විස් අරඹන්න</button>
+          <button class="btn" onclick="scrollToId('lessons')">පාඩම් බලන්න</button>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <b>උදාහරණ සූත්‍ර</b>
+          <p>අනුපාතය: $\n\\dfrac{a}{b} = \dfrac{c}{d} \;\Rightarrow\; ad = bc$</p>
+          <p>කොණ එකතුව: $\n A + B + C = 180^\u00b0$</p>
+          <p>ද්විගුණ ත්‍රිගුණ සූත්‍ර: $\n (a+b)^2 = a^2 + 2ab + b^2$</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lessons -->
+    <section id="lessons" style="margin-top:10px">
+      <h2 style="margin-bottom:12px">📚 පාඩම්</h2>
+      <div class="grid" id="lessonGrid"></div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz" style="margin-top:22px">
+      <h2>🧠 QUIZ</h2>
+      <div class="card">
+        <div class="progress"><span>ප්‍රශ්නය <b id="qIndex">1</b>/<span id="qTotal">0</span></span><span>ලකුණු: <b id="score">0</b></span></div>
+        <div class="question" id="questionText">—</div>
+        <div id="options"></div>
+        <div class="actions">
+          <button class="btn" id="nextBtn">ඊළඟට ➜</button>
+          <button class="btn" id="retryBtn" style="display:none">නැවත කරන්න</button>
+        </div>
+      </div>
+      <div style="margin-top:8px;color:var(--muted)">💡 උපදෙස්: සරල රූප, පංති සිතියම් සහ සූත්‍ර <b>පාඩම්</b> කොටසේ තියෙනවා.</div>
+    </section>
+
+    <!-- Tools -->
+    <section id="tools" style="margin-top:22px">
+      <h2>🛠️ උපකරණ</h2>
+      <div class="tools">
+        <!-- Times Table Generator -->
+        <div class="tool">
+          <h4>ගුණන වගුව (Times Table)</h4>
+          <label>අංකය තෝරන්න</label>
+          <input class="input" type="number" id="ttNumber" min="1" max="20" value="5" />
+          <div class="tool-output" id="ttOutput"></div>
+        </div>
+        <!-- Fraction Visualizer -->
+        <div class="tool">
+          <h4>භාගික රූපකය (Fraction Visualizer)</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div>
+              <label>ඉහළ සංඛ්‍යාව (Numerator)</label>
+              <input class="input" type="number" id="num" min="0" value="1" />
+            </div>
+            <div>
+              <label>පහළ සංඛ්‍යාව (Denominator)</label>
+              <input class="input" type="number" id="den" min="1" value="4" />
+            </div>
+          </div>
+          <canvas id="fracCanvas" width="500" height="160" style="width:100%;margin-top:10px;border-radius:12px;background:#0b1223;border:1px solid rgba(255,255,255,.06)"></canvas>
+          <div class="tool-output" id="fracLabel">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" style="margin-top:22px">
+      <h2>ℹ️ අප ගැන</h2>
+      <div class="card">
+        <p>මෙම වෙබ් අඩවිය සරල සිංහල භාෂාවෙන් ගණිතය ඉගෙනීමට උදවු වෙන්න නිර්මාණය කළේය. පාඩම්, නිදහස් Quiz සහ දෘශ්‍ය උපකරණ මඟින් ළමයින්ට සහ ගුරුවරුන්ට <b>නොමිලේ</b> සහයක් ලබාදෙයි. 🔰</p>
+        <div>
+          <span class="badge">සිංහල අතුරු මුහුණත</span>
+          <span class="badge">Online / Offline</span>
+          <span class="badge">ලකුණු & බැජ්</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Magic Mathz – All rights reserved 2025.
+    </footer>
+  </main>
+
+  <script>
+    // ------- Content Data (easy to edit) -------
+    const LESSONS = [
+      { id:1, grade:"  ", title:"සංඛ්‍යා කල්පනාව (Place Value)", brief:"දශමාංශ හා වශීභාවය ගැඹුරට.", formula:"1234 = 1\\times 10^3 + 2\\times 10^2 + 3\\times10 + 4" },
+      { id:2, grade:"  ", title:"අනුපාත හා සමමානතාව", brief:"\\(a:b = c:d\\) නම් ad=bc.", formula:"\\dfrac{a}{b} = \\dfrac{c}{d} \n=> ad = bc" },
+      { id:3, grade:"  ", title:"රේඛීය සමීකරණ", brief:"\\(ax + b = 0\\) සදහා විසඳුම \\(x = -b/a\\).", formula:"ax + b = 0" },
+      { id:4, grade:"  ", title:"ප්‍රතිශත", brief:"x% = x/100.", formula:"\\dfrac{x}{100}" },
+      { id:5, grade:"  ", title:"ත්‍රිකෝණමිතිය මූලික", brief:"සමකොණ තුන්කෝණයකින්:", formula:"\\sin^2 \\theta + \\cos^2 \\theta = 1" },
+      { id:6, grade:" ", title:"ද්විපද විසදීම සඳහා සූත්‍රය", brief:"\\(ax^2+bx+c=0\\) විසඳුම: ", formula:"x=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}" },
+    ];
+
+    const QUIZ = [
+      { q:"7 × 8 = ?", options:["54","56","58","64"], answer:1 },
+      { q:"\\(12/3\\) = ?", options:["3","4","6","9"], answer:1 },
+      { q:"\\(x\\) සදහා විසඳන්න: \\; 2x + 6 = 14", options:["x=3","x=4","x=6","x=8"], answer:1 },
+      { q:"ශ්‍රේණියක්: 2, 4, 6, ?", options:["7","8","9","10"], answer:1 },
+      { q:"කොණ එකතුව: තුන්කොණයක අභ්‍යන්තර කොණ වල එකතුව?", options:["90°","120°","180°","360°"], answer:2 },
+    ];
+
+    // ------- Helpers -------
+    const $ = (sel)=>document.querySelector(sel);
+    const $$ = (sel)=>document.querySelectorAll(sel);
+    const scrollToId = (id)=>document.getElementById(id).scrollIntoView({behavior:'smooth'});
+
+    // Stats
+    document.getElementById('lessonCount').textContent = LESSONS.length;
+    document.getElementById('questionCount').textContent = QUIZ.length;
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Points from localStorage
+    const POINTS_KEY = 'mathlk_points';
+    let totalPoints = +localStorage.getItem(POINTS_KEY) || 0;
+    const setPoints = (v)=>{ totalPoints=v; localStorage.setItem(POINTS_KEY, totalPoints); document.getElementById('points').textContent=totalPoints; };
+    setPoints(totalPoints);
+
+    // Render Lessons
+    const lessonGrid = document.getElementById('lessonGrid');
+    LESSONS.forEach(L=>{
+      const el = document.createElement('div');
+      el.className='card';
+      el.innerHTML = `
+        <h3>${L.title} <span style="color:var(--brand);font-weight:400;font-size:12px">${L.grade}</span></h3>
+        <p>${L.brief}</p>
+        <div class="panel" style="margin-top:12px"><b>සූත්‍රය:</b> $${L.formula}$</div>
+        <div class="actions">
+          <button class="btn" onclick="alert('මෙම පාඩම තව දියුණු කරනවා. ඔබට ඇඩ් කරන විෂය: ${L.title}')">කියවන්න</button>
+          <button class="btn" onclick="addPoints(5)">5 ලකුණු ගන්න</button>
+        </div>`;
+      lessonGrid.appendChild(el);
+    });
+
+    function addPoints(n){ setPoints(totalPoints + n); }
+
+    // ------- Quiz Logic -------
+    const qIndexEl = document.getElementById('qIndex');
+    const qTotalEl = document.getElementById('qTotal');
+    const qTextEl = document.getElementById('questionText');
+    const optionsEl = document.getElementById('options');
+    const scoreEl = document.getElementById('score');
+    const nextBtn = document.getElementById('nextBtn');
+    const retryBtn = document.getElementById('retryBtn');
+
+    let order = [...QUIZ.keys()];
+    shuffle(order);
+    let qi = 0, score = 0, locked=false;
+    qTotalEl.textContent = QUIZ.length;
+
+    function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]] } }
+
+    function loadQuestion(){
+      locked=false; optionsEl.innerHTML='';
+      const item = QUIZ[ order[qi] ];
+      qIndexEl.textContent = qi+1;
+      qTextEl.innerHTML = item.q;
+      item.options.forEach((opt,idx)=>{
+        const btn = document.createElement('button');
+        btn.className='option';
+        btn.innerHTML = opt;
+        btn.onclick = ()=>select(idx, item.answer, btn);
+        optionsEl.appendChild(btn);
+      });
+      MathJax.typesetPromise();
+    }
+
+    function select(idx, ans, el){
+      if(locked) return; locked=true;
+      const nodes = [...optionsEl.children];
+      nodes.forEach((n,i)=>{
+        if(i===ans) n.classList.add('correct');
+        if(i===idx && idx!==ans) n.classList.add('wrong');
+      });
+      if(idx===ans){ score+=10; scoreEl.textContent=score; addPoints(10); }
+      nextBtn.focus();
+    }
+
+    nextBtn.onclick = ()=>{
+      if(qi < QUIZ.length-1){ qi++; loadQuestion(); }
+      else { endQuiz(); }
+    };
+
+    retryBtn.onclick = ()=>{ order=[...QUIZ.keys()]; shuffle(order); qi=0; score=0; scoreEl.textContent=0; nextBtn.style.display=''; retryBtn.style.display='none'; loadQuestion(); };
+
+    function endQuiz(){
+      qTextEl.innerHTML = `🎉 ඔබ ලකුණු ලබාගත්තේ <b>${score}</b>කි!`;
+      optionsEl.innerHTML = '';
+      nextBtn.style.display='none';
+      retryBtn.style.display='';
+    }
+
+    loadQuestion();
+
+    // ------- Tools Logic -------
+    const ttNumber = document.getElementById('ttNumber');
+    const ttOutput = document.getElementById('ttOutput');
+    const num = document.getElementById('num');
+    const den = document.getElementById('den');
+    const fracCanvas = document.getElementById('fracCanvas');
+    const fracLabel = document.getElementById('fracLabel');
+
+    function renderTimesTable(){
+      const n = Math.max(1, Math.min(20, +ttNumber.value||1));
+      let html = '<ol style="margin:0;padding-left:20px">';
+      for(let i=1;i<=12;i++) html += `<li style="margin:4px 0">${n} × ${i} = <b>${n*i}</b></li>`;
+      html += '</ol>';
+      ttOutput.innerHTML = html;
+    }
+
+    function renderFraction(){
+      const n = Math.max(0, +num.value||0), d = Math.max(1, +den.value||1);
+      const ctx = fracCanvas.getContext('2d');
+      const W = fracCanvas.width, H = fracCanvas.height;
+      ctx.clearRect(0,0,W,H);
+      // Draw bar
+      const margin=24; const barW=W-2*margin; const barH=40; const x=margin; const y=(H-barH)/2;
+      // outline
+      ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.lineWidth=2; ctx.strokeRect(x,y,barW,barH);
+      // filled
+      const ratio = Math.min(1, n/d);
+      ctx.fillStyle = 'rgba(34,197,94,0.85)';
+      ctx.fillRect(x,y,barW*ratio,barH);
+      // ticks
+      ctx.fillStyle='rgba(255,255,255,0.35)';
+      for(let i=1;i<d;i++){ const tx = x + i*barW/d; ctx.fillRect(tx-1,y,2,barH); }
+      // text
+      ctx.fillStyle='white'; ctx.font='16px Poppins'; ctx.fillText(`${n}/${d} = ${(n/d).toFixed(2)}`, x, y-10);
+      fracLabel.innerHTML = `භාගික අගය: <b>${n}/${d}</b> = <b>${(n/d).toFixed(3)}</b>`;
+    }
+
+    ttNumber.addEventListener('input', renderTimesTable);
+    num.addEventListener('input', renderFraction);
+    den.addEventListener('input', renderFraction);
+
+    renderTimesTable();
+    renderFraction();
+
+    // Keyboard access
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter' && nextBtn.style.display!=='none'){ nextBtn.click(); }
+    });
+
+  </script>
+</body>
+</html>
